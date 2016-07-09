@@ -29,7 +29,7 @@ class PostController extends Controller
     public function create(Request $request)
     {
         $image_name = 'images/'. time() . Auth::user()->id . '.jpg';
-        Storage::put(
+        Storage::disk('qiniu')->put(
             $image_name,
             file_get_contents($request->file('image')->getRealPath())
         );
