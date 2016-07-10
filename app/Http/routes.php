@@ -35,3 +35,5 @@ Route::post('register', 'UserController@register');
 Route::post('oauth/access_token', function() {
     return Response::json(Authorizer::issueAccessToken());
 });
+
+Route::post('/device', 'DeviceController@register');
