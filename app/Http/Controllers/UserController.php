@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\User;
+use Auth;
+use Storage;
 
 class UserController extends Controller
 {
@@ -17,6 +19,18 @@ class UserController extends Controller
             'phone' => $data['username'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function edit_avatar(Request $request)
+    {
+        $image_name = 'avatar/'. time() . Auth::user()->id . '.jpg';
+        Storage::disk('qiniu')->put(
+            $image_name,
+            file_get_contents($request->file('avatar')->getRealPath())
+        );
+        Auth::user()->avatar = $image_name;
+        return Storage::disk('qiniu')->getDriver()
+            ->imagePreviewUrl($image_name, 'imageView2/1/w/100/h/100');
     }
 
     public function index()

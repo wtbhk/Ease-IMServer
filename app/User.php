@@ -6,9 +6,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Library\EaseIM as EaseIM;
 use Log;
 use App;
+use Storage;
 
 class User extends Authenticatable
 {
+    static $DEFAULT_AVATAR = 'avatar/default_avatar.jpg';
     static function boot()
     {
         parent::boot();
@@ -18,6 +20,9 @@ class User extends Authenticatable
             $result = $im->createUser($user->phone, $user->phone);
             Log::info('向环信注册用户');
             Log::info(json_encode($result));
+            if (!$user->avatar) {
+                $user->avatar = self::$DEFAULT_AVATAR;
+            }
         });
     }
     /**
@@ -26,7 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'password',
+        'name', 'phone', 'password', 'avatar'
     ];
 
     /**
@@ -64,6 +69,15 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+    public function getAvatarAttribute($value)
+    {
+        if (!$value) {
+            return '';
+        }
+        return Storage::disk('qiniu')->getDriver()
+            ->imagePreviewUrl($value, 'imageView2/1/w/100/h/100');
     }
 
 }

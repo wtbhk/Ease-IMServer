@@ -20,6 +20,7 @@ Route::group(['middleware' => ['oauth', 'auth-user']], function() {
     Route::delete('friend/{phone}', 'FriendController@delete');
     Route::get('friend', 'FriendController@index');
     Route::get('user', 'UserController@index');
+    Route::post('avatar', 'UserController@edit_avatar');
     Route::get('post', 'PostController@index');
     Route::post('post', 'PostController@create');
     Route::delete('post/{post_id}', 'PostController@delete');
