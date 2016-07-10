@@ -15,7 +15,7 @@ class PostController extends Controller
     public function index()
     {
         $friends = Auth::user()->friends->pluck('id');
-        $posts = Post::with('author')->whereIn('user_id', $friends)->newest()->get();
+        $posts = Post::with('author')->with('comments.author')->whereIn('user_id', $friends)->newest()->get();
         $ret = [];
         foreach ($posts as $row) {
             $ret[] = [
