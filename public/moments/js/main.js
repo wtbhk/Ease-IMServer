@@ -30,21 +30,23 @@ $(document).ready(function () {
       }
     });
 
-    $(".comment").on("click", function () {
-      post_id = $(this).parents("li").attr('data-id');
-      $("#comment-modal").modal();
-      $("#comment-modal-submit").on("click", function (event) {
-        event.preventDefault();
-        $("#comment-modal .close-modal").click();
-        content = $("#comment-modal-content").val()
-        $.post("../post/" + post_id + "/comment", {
-          "access_token": token,
-          "content": content
-        }, function () {
-          html = "<p><span>" + $("#user-name").html() + "：</span>" + content + "</p>";
-          $("#list li[data-id=" + post_id + "] .cmt-list").append(html);
-        });
+    $("#comment-modal-submit").on("click", function (event) {
+      event.preventDefault();
+      post_id = $("#comment-modal").attr('data-id');
+      $("#comment-modal .close-modal").click();
+      content = $("#comment-modal-content").val()
+      $.post("../post/" + post_id + "/comment", {
+        "access_token": token,
+        "content": content
+      }, function () {
+        html = "<p><span>" + $("#user-name").html() + "：</span>" + content + "</p>";
+        $("#list li[data-id=" + post_id + "] .cmt-list").append(html);
       });
+    });
+
+    $(".comment").on("click", function () {
+      $("#comment-modal").attr("data-id", $(this).parents("li").attr('data-id'))
+      $("#comment-modal").modal();
     });
   });
 });
