@@ -17,7 +17,7 @@ class User extends Authenticatable
         User::creating(function($user)
         {
             $im = new EaseIM();
-            $result = $im->createUser($user->phone, $user->phone);
+            $result = $im->createUser($user->phone, env("EASE_USER_PASSWORD", "123456"));
             Log::info('向环信注册用户');
             Log::info(json_encode($result));
             if (!$user->avatar) {
