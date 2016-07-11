@@ -1,3 +1,6 @@
+function createPost() {
+  $("#post-modal").modal();
+}
 function getUrlParam(name) {
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
   var r = window.location.search.substr(1).match(reg);  //匹配目标参数
@@ -9,6 +12,7 @@ $(document).ready(function () {
   $.get("../profile", {'access_token': token}, function (result) {
     $("#user-name").html(result['name']);
     $("#avt").attr('src', result['avatar']);
+    $(".access-token").val(token);
   });
 
   $.get("../post", {'access_token': token}, function (posts) {
@@ -48,5 +52,19 @@ $(document).ready(function () {
       $("#comment-modal").attr("data-id", $(this).parents("li").attr('data-id'))
       $("#comment-modal").modal();
     });
+  });
+
+  $("#post-modal-image").on("click", function (event) {
+    $("#post-modal-file").click();
+  });
+
+  $("#post-modal-file").on("change", function (event) {
+    if (this.files && this.files[0]) {
+      reader = new FileReader();
+      reader.onload = function (e) {
+        $("#post-modal-image").attr("src", e.target.result);
+      }
+      reader.readAsDataURL(this.files[0]);
+    }
   });
 });

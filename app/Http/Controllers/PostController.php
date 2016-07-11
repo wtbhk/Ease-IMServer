@@ -41,11 +41,15 @@ class PostController extends Controller
             $image_name,
             file_get_contents($request->file('image')->getRealPath())
         );
-        return Post::create([
+        $post = Post::create([
             'image' => $image_name,
             'content' => $request->input('content'),
             'user_id' => Auth::user()->id,
         ]);
+        if($request->isJson()) {
+            return $post;
+        }
+        return redirect('/moments/?access_token=' . $request->input('access_token'));
     }
 
     public function delete($id)
