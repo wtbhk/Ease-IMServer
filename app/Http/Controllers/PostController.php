@@ -15,15 +15,22 @@ class PostController extends Controller
     public function index()
     {
         $friends = Auth::user()->friends->pluck('id');
-        $posts = Post::with('author')->with('comments.author')->whereIn('user_id', $friends)->newest()->get();
-        $ret = [];
-        foreach ($posts as $row) {
-            $ret[] = [
-                'title' => $row->author->name,
-                'desc' => $row->content
-            ];
-        }
-        return $ret;
+        $posts = Post::with('author')
+            ->with('comments.author')
+            ->with('likedBy')
+            ->whereIn('user_id', $friends)
+            ->newest()
+            ->get();
+        $posts = $posts->map(function ($post, $key) {
+            $post->liked = false;
+            foreach ($post->likedBy as $user) {
+                if ($user->id == Auth::user()->id) {
+                    $post->liked = true;
+                }
+            }
+            return $post;
+        });
+        return $posts;
     }
 
     public function create(Request $request)

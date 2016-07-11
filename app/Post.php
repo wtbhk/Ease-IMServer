@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Storage;
 
 class Post extends Model
 {
@@ -26,6 +27,15 @@ class Post extends Model
     public function scopeNewest($query)
     {
         return $query->orderBy('created_at', 'desc');
+    }
+
+    public function getImageAttribute($value)
+    {
+        if (!$value) {
+            return '';
+        }
+        return Storage::disk('qiniu')->getDriver()
+            ->imagePreviewUrl($value, 'imageView2/1/w/100/h/100');
     }
 
 }
