@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Post;
 use App\Comment;
+use Auth;
 
 class CommentController extends Controller
 {
@@ -15,7 +16,7 @@ class CommentController extends Controller
         $post = Post::find($post_id);
         $post->comments()->create([
             'user_id' => Auth::user()->id,
-            'content' => $request->input('content');
+            'content' => $request->input('content')
         ]);
     }
 
