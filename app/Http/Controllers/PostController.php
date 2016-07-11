@@ -15,6 +15,7 @@ class PostController extends Controller
     public function index()
     {
         $friends = Auth::user()->friends->pluck('id');
+        $friends[] = Auth::user()->id;
         $posts = Post::with('author')
             ->with('comments.author')
             ->with('likedBy')
