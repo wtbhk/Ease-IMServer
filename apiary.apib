@@ -1,0 +1,157 @@
+FORMAT: 1A
+HOST: http://apihost.dev/
+
+# Ease-IMServer
+
+环信IM后端的说明文档
+
+## 注册 [/register]
+
+### 注册一个新用户 [POST]
+
++ Request (application/json)
+        
+        {
+            "name": "Jerry",
+            "phone": 18678787878,
+            "password": 123456
+        }
+
++ Response 200 (application/json)
+
+        {
+        }
+    
+
+## 鉴权 [/oauth/access_token]
+
+使用oauth2协议进行鉴权。通过登录获取token。在之后的请求中，需要权限验证的地方需要带上token，参数名称是`access_token`。
+
+### 登录获取token [POST]
+
++ Request (application/json)
+
+        {
+            "username": 18678787878,
+            "password": "123456",
+            "grant_type": "password",
+            "client_id": 1,
+            "client_secret": "client_secret"
+        }
+        
+        
++ Response 200 (application/json)
+        
+        {
+            "access_token": "xM4lqF1h5qyNfpDGJR2ycYBanXdaRMcVEEY52EIA",
+            "token_type": "Bearer",
+            "expires_in": 36000
+        }
+        
+
+## 头像 [/avatar]
+
+### 上传头像 [POST]
+
++ Request (application/json)
+
+        {
+            "avatar": {image.jpg}
+        }
+
++ Response 200 (application/json)
+
+## 好友列表 [/friend]
+
+### 获取好友列表 [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+## 好友操作 [/friend/{phone}]
+
++ Parameters
+    + phone (number) - 电话号码
+
+### 添加好友 [POST]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+### 删除好友 [DELETE]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+        
+## 朋友圈 [/post]
+
+### 获取朋友圈 [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+### 发布朋友圈 [POST]
+
++ Request (application/json)
+
+        {
+            "content": "这是一条朋友圈",
+            "image": {image.jpg}
+        }
+        
++ Response 200 (application/json)
+
+## 对某条朋友圈 [/post/{post_id}]
+
++ Parameters
+    + post_id (number) - 该条朋友圈的ID
+
+### 删除该朋友圈 [DELETE]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+## 朋友圈点赞 [/post/{post_id}/like]
+
++ Parameters
+    + post_id (number) - 该条朋友圈的ID
+
+### 点赞 [POST]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+### 取消点赞 [DELETE]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+## 评论朋友圈 [/post/{post_id}/comment]
+
++ Parameters
+    + post_id (number) - 该条朋友圈的ID
+    
+### 发布评论 [POST]
+
++ Request (application/json)
+
+        {
+            "content": "评论内容"
+        }
+
++ Response 200 (application/json)
+
+## 对自己评论的操作 [/comment/{comment_id}]
+
+### 删除该条评论 [DELETE]
+
++ Request (application/json)
+
++ Response 200 (application/json)
