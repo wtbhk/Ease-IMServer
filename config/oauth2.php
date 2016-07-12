@@ -31,7 +31,7 @@ return [
       'password' => [
         'class' => '\League\OAuth2\Server\Grant\PasswordGrant',
         'callback' => '\App\Verifier@verify',
-        'access_token_ttl' => 36000
+        'access_token_ttl' => env("OAUTH_PASSWORD_TOKEN_TTL", 36000)
       ]
     ],
 
