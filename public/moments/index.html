@@ -32,17 +32,15 @@
 				</div>
 				<p class="time">{{post.created_at}}</p><i class="comment icon c-icon"></i><i style="margin-right: 10px;" class="{{if !post.liked}}empty{{/if}} heart icon c-icon"></i>
 			</div>
-			{{if post.comments.length != 0}}
 			<div class="r" style="display:none;"></div>
 			<div class="cmt-wrap">
-				<div class="like"><img src="images/l.png">{{each post.liked_by as user}}{{user.name}} {{/each}}</div>
+				<div class="like"><img src="images/l.png" /><span class="like-content">{{each post.liked_by as user}}{{user.name}} {{/each}}</span></div>
 				<div class="cmt-list">
 					{{each post.comments as comment}}
 					<p><span>{{comment.author.name}}：</span>{{comment.content}}</p>
 					{{/each}}
 				</div>
 			</div>
-			{{/if}}
 		</div>
 	</li>
 	{{/each}}

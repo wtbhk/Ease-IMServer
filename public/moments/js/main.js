@@ -20,16 +20,31 @@ $(document).ready(function () {
     $("#list ul").html(html);
 
     $(".heart").on('click', function () {
-      post_id = $(this).parents("li").attr('data-id');
+      post_li = $(this).parents("li");
+      post_id = post_li.attr('data-id');
       if ($(this).hasClass('empty')) {
         $(this).removeClass('empty');
-        $.post("../post/" + post_id + "/like", {'access_token': token});
+        $.post("../post/" + post_id + "/like", {'access_token': token}, function () {
+          post_li.find(".like .like-content").append($("#user-name").html() + " ")
+        });
       } else {
         $(this).addClass('empty');
         $.ajax({
           url: '../post/' + post_id + '/like',
           type: 'DELETE',
-          data: {'access_token': token}
+          data: {'access_token': token},
+          success: function () {
+            likes = post_li.find(".like-content").html().split(" ");
+            console.log(likes);
+            result = [];
+            for (i in likes) {
+              if (likes[i] != $("#user-name").html()) {
+                result.push(likes[i]);
+              }
+            }
+            console.log(result);
+            post_li.find(".like-content").html(result.join(" "));
+          }
         });
       }
     });
